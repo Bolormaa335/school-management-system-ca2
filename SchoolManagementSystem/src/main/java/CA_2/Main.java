@@ -37,7 +37,7 @@ public class Main {
 
                 // Split line into 3 parts
                 String[] parts = line.split(",");
-
+                
                 // Make sure the line has name, role, department
                 if (parts.length == 3) {
 
@@ -74,6 +74,98 @@ public class Main {
         return employees;
     }
 
+    // Recursive merge sort method
+public static void mergeSort(ArrayList<Employee> employees) {
+
+    // Base case
+    if (employees.size() <= 1) {
+        return;
+    }
+
+    // Find middle index
+    int middle = employees.size() / 2;
+
+    // Create left half
+    ArrayList<Employee> left = new ArrayList<Employee>();
+
+    // Create right half
+    ArrayList<Employee> right = new ArrayList<Employee>();
+
+    // Fill left array
+    for (int i = 0; i < middle; i++) {
+        left.add(employees.get(i));
+    }
+
+    // Fill right array
+    for (int i = middle; i < employees.size(); i++) {
+        right.add(employees.get(i));
+    }
+
+    // Recursive call for left half
+    mergeSort(left);
+
+    // Recursive call for right half
+    mergeSort(right);
+
+    // Merge sorted halves
+    merge(employees, left, right);
+
+}
+// Merge two sorted lists
+public static void merge(ArrayList<Employee> employees,
+                         ArrayList<Employee> left,
+                         ArrayList<Employee> right) {
+
+    // Left index
+    int i = 0;
+
+    // Right index
+    int j = 0;
+
+    // Main array index
+    int k = 0;
+
+    // Compare left and right lists
+    while (i < left.size() && j < right.size()) {
+
+        // Compare employee names alphabetically
+        if (left.get(i).getName()
+                .compareToIgnoreCase(right.get(j).getName()) <= 0) {
+
+            // Add left employee
+            employees.set(k, left.get(i));
+
+            i++;
+
+        } else {
+
+            // Add right employee
+            employees.set(k, right.get(j));
+
+            j++;
+        }
+
+        k++;
+    }
+
+    // Add remaining left employees
+    while (i < left.size()) {
+
+        employees.set(k, left.get(i));
+
+        i++;
+        k++;
+    }
+
+    // Add remaining right employees
+    while (j < right.size()) {
+
+        employees.set(k, right.get(j));
+
+        j++;
+        k++;
+    }
+}
     // Display console menu
     public static void displayMenu() {
         System.out.println("\n===== SCHOOL MANAGEMENT SYSTEM =====");
@@ -121,6 +213,13 @@ public class Main {
 
                     case SORT:
                         System.out.println("SORT selected");
+                        // Sort employee list
+                       mergeSort(employees);
+
+                    // Display first 20 sorted employees
+                    for (Employee employee : employees) {
+                     System.out.println(employee);
+                              }
                         break;
 
                     case SEARCH:
