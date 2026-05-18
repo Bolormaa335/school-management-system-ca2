@@ -73,99 +73,6 @@ public class Main {
         // Return employee list
         return employees;
     }
-
-    // Recursive merge sort method
-public static void mergeSort(ArrayList<Employee> employees) {
-
-    // Base case
-    if (employees.size() <= 1) {
-        return;
-    }
-
-    // Find middle index
-    int middle = employees.size() / 2;
-
-    // Create left half
-    ArrayList<Employee> left = new ArrayList<Employee>();
-
-    // Create right half
-    ArrayList<Employee> right = new ArrayList<Employee>();
-
-    // Fill left array
-    for (int i = 0; i < middle; i++) {
-        left.add(employees.get(i));
-    }
-
-    // Fill right array
-    for (int i = middle; i < employees.size(); i++) {
-        right.add(employees.get(i));
-    }
-
-    // Recursive call for left half
-    mergeSort(left);
-
-    // Recursive call for right half
-    mergeSort(right);
-
-    // Merge sorted halves
-    merge(employees, left, right);
-
-}
-// Merge two sorted lists
-public static void merge(ArrayList<Employee> employees,
-                         ArrayList<Employee> left,
-                         ArrayList<Employee> right) {
-
-    // Left index
-    int i = 0;
-
-    // Right index
-    int j = 0;
-
-    // Main array index
-    int k = 0;
-
-    // Compare left and right lists
-    while (i < left.size() && j < right.size()) {
-
-        // Compare employee names alphabetically
-        if (left.get(i).getName()
-                .compareToIgnoreCase(right.get(j).getName()) <= 0) {
-
-            // Add left employee
-            employees.set(k, left.get(i));
-
-            i++;
-
-        } else {
-
-            // Add right employee
-            employees.set(k, right.get(j));
-
-            j++;
-        }
-
-        k++;
-    }
-
-    // Add remaining left employees
-    while (i < left.size()) {
-
-        employees.set(k, left.get(i));
-
-        i++;
-        k++;
-    }
-
-    // Add remaining right employees
-    while (j < right.size()) {
-
-        employees.set(k, right.get(j));
-
-        j++;
-        k++;
-    }
-}
     // Display console menu
     public static void displayMenu() {
         System.out.println("\n===== SCHOOL MANAGEMENT SYSTEM =====");
@@ -186,6 +93,8 @@ public static void merge(ArrayList<Employee> employees,
 
         // Read employees from file
         ArrayList<Employee> employees = readEmployeesFromFile();
+        
+        ArrayList<Employee> newEmployees = new ArrayList<Employee>();
 
         // Store user menu choice
         int choice = 0;
@@ -214,7 +123,7 @@ public static void merge(ArrayList<Employee> employees,
                     case SORT:
                         System.out.println("SORT selected");
                         // Sort employee list
-                       mergeSort(employees);
+                       EmployeeUtility.mergeSort(employees);
 
                     // Display first 20 sorted employees
                     for (Employee employee : employees) {
@@ -223,26 +132,97 @@ public static void merge(ArrayList<Employee> employees,
                         break;
 
                     case SEARCH:
+                        
                         System.out.println("SEARCH selected");
+
+                        // Sort list before binary search
+                        EmployeeUtility.mergeSort(employees);
+
+                        // Ask user for name
+                         System.out.print("Enter employee name to search: ");
+                         String searchName = scanner.nextLine();
+
+                         // Search employee by name
+                         int index = EmployeeUtility.binarySearch(employees, searchName, 0, employees.size() - 1);
+
+                         // Check result
+                        if (index != -1) {
+                         System.out.println("Employee found:");
+                         System.out.println(employees.get(index));
+                         } else {
+                        System.out.println("Employee not found.");
+}
                         break;
 
-                    case ADD_RECORD:
-                        System.out.println("ADD RECORD selected");
-                        break;
+                        case ADD_RECORD:
+                        // Print message
+                       System.out.println("ADD RECORD selected");
+
+                        // Ask for employee name
+                       System.out.print("Enter employee name: ");
+                       String newName = scanner.nextLine();
+
+                      // Ask for role
+                       System.out.print("Enter role: ");
+                       String newRole = scanner.nextLine();
+
+                      // Ask for department
+                      System.out.print("Enter department: ");
+                      String newDepartment = scanner.nextLine();
+
+                       // Call EmployeeManager class
+                       Employee newEmployee = EmployeeManager.addEmployee(
+                       employees,
+                       newName,
+                       newRole,
+                       newDepartment
+                          );
+
+                      if (newEmployee != null) {
+                      newEmployees.add(newEmployee);
+                      }
+
+                       break;
 
                     case CREATE_BINARY_TREE:
                         System.out.println("CREATE BINARY TREE selected");
-                        break;
-
-                    case DISPLAY_RECORDS:
-                        System.out.println("DISPLAY RECORDS selected");
+                        BinaryTree tree = new BinaryTree();
 
                         for (Employee employee : employees) {
-                            System.out.println(employee);
-                        }
+                         tree.insert(employee);
+                           }
 
+                         tree.displayLevelOrder();
+                         tree.displayTreeStatistics();
                         break;
 
+                     case DISPLAY_RECORDS:
+                        System.out.println("DISPLAY RECORDS selected");
+
+                         // Display all employees
+                     for (Employee employee : employees) {
+
+                     System.out.println(employee);
+                      }
+
+                      // Display newly added employees
+                     System.out.println("\nNewly added records:");
+
+                     // Check if empty
+                     if (newEmployees.isEmpty()) {
+
+                     System.out.println("No new records added yet.");
+
+                    } else {
+
+                     // Print new employees
+                     for (Employee employee : newEmployees) {
+
+                    System.out.println(employee);
+                     }
+                     }
+
+                     break;
                     case EXIT:
                         System.out.println("Program ended.");
                         break;
