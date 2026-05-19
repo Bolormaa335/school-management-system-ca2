@@ -70,6 +70,8 @@ public class EmployeeManager {
 
         // Validate inputs
         if (isValidRole(role) && isValidDepartment(department)) {
+            
+            
 
             // Create employee object
             Employee employee =
@@ -89,6 +91,24 @@ public class EmployeeManager {
             return null;
         }
     }
+    // Validate employee name
+public static boolean isValidName(String name) {
+
+    if (name.trim().isEmpty()) {
+        return false;
+    }
+
+    for (int i = 0; i < name.length(); i++) {
+
+        char ch = name.charAt(i);
+
+        if (!Character.isLetter(ch) && ch != ' ') {
+            return false;
+        }
+    }
+
+    return true;
+}
 }
 
     
