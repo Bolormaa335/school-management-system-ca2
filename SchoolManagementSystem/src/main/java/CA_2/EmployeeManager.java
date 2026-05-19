@@ -61,6 +61,35 @@ public class EmployeeManager {
 
         return false;
     }
+    // Add employee
+    public static Employee addEmployee(
+            ArrayList<Employee> employees,
+            String name,
+            String role,
+            String department) {
+
+        // Validate inputs
+        if (isValidRole(role) && isValidDepartment(department)) {
+
+            // Create employee object
+            Employee employee =
+                    new Employee(name, role, department);
+
+            // Add employee to list
+            employees.add(employee);
+
+            System.out.println(
+                    name + " added successfully.");
+            return employee;
+
+        } else {
+
+            System.out.println(
+                    "Invalid role or department.");
+            return null;
+        }
+    }
+}
 
     
 
