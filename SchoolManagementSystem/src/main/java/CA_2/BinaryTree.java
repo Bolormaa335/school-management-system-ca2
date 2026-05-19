@@ -115,6 +115,53 @@ public void displayLevelOrder() {
     }
 }
 
+// Display hierarchy with parent and children
+public void displayHierarchy() {
+
+    // Empty tree check
+    if (root == null) {
+
+        System.out.println("Tree is empty.");
+        return;
+    }
+
+    // Queue for level-order traversal
+    ArrayList<Node> queue = new ArrayList<Node>();
+
+    // Add root node
+    queue.add(root);
+
+    // Loop through tree
+    while (!queue.isEmpty()) {
+
+        // Get first node
+        Node current = queue.remove(0);
+
+        // Print parent employee
+        System.out.println("\nPARENT:");
+        System.out.println(current.employee);
+
+        // Print left child
+        if (current.left != null) {
+
+            System.out.println("  LEFT CHILD:");
+            System.out.println("  " + current.left.employee);
+
+            // Add left child to queue
+            queue.add(current.left);
+        }
+
+        // Print right child
+        if (current.right != null) {
+
+            System.out.println("  RIGHT CHILD:");
+            System.out.println("  " + current.right.employee);
+
+            // Add right child to queue
+            queue.add(current.right);
+        }
+    }
+}
 // Count total nodes
 public int countNodes(Node node) {
 
