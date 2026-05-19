@@ -192,7 +192,7 @@ public class Main {
                          tree.insert(employee);
                            }
 
-                         tree.displayLevelOrder();
+                         tree.displayHierarchy();
                          tree.displayTreeStatistics();
                         break;
 
