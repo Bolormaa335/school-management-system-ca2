@@ -36,6 +36,32 @@ public class EmployeeManager {
         "Accounts Office",
         "IT Support"
     };
+    // Check valid role
+    public static boolean isValidRole(String role) {
+
+        for (String validRole : validRoles) {
+
+            if (validRole.equalsIgnoreCase(role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Check valid department
+    public static boolean isValidDepartment(String department) {
+
+        for (String validDepartment : validDepartments) {
+
+            if (validDepartment.equalsIgnoreCase(department)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     
 
 
