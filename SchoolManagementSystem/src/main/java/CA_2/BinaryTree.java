@@ -115,7 +115,7 @@ public void displayLevelOrder() {
     }
 }
 
-// Display hierarchy with parent and children
+// Display hierarchy visually
 public void displayHierarchy() {
 
     // Empty tree check
@@ -125,42 +125,36 @@ public void displayHierarchy() {
         return;
     }
 
-    // Queue for level-order traversal
-    ArrayList<Node> queue = new ArrayList<Node>();
+    // Display tree starting from root
+    displayTree(root, "", true);
+}
 
-    // Add root node
-    queue.add(root);
+// Recursive visual hierarchy display
+private void displayTree(Node node,
+                         String indent,
+                         boolean last) {
 
-    // Loop through tree
-    while (!queue.isEmpty()) {
+    // Stop if node is empty
+    if (node == null) {
 
-        // Get first node
-        Node current = queue.remove(0);
-
-        // Print parent employee
-        System.out.println("\nPARENT:");
-        System.out.println(current.employee);
-
-        // Print left child
-        if (current.left != null) {
-
-            System.out.println("  LEFT CHILD:");
-            System.out.println("  " + current.left.employee);
-
-            // Add left child to queue
-            queue.add(current.left);
-        }
-
-        // Print right child
-        if (current.right != null) {
-
-            System.out.println("  RIGHT CHILD:");
-            System.out.println("  " + current.right.employee);
-
-            // Add right child to queue
-            queue.add(current.right);
-        }
+        return;
     }
+
+    // Print current employee with branch symbol
+    System.out.println(
+            indent
+            + (last ? "\\-- " : "|-- ")
+            + node.employee
+    );
+
+    // Update indentation for next level
+    indent += last ? "    " : "|   ";
+
+    // Display left child
+    displayTree(node.left, indent, false);
+
+    // Display right child
+    displayTree(node.right, indent, true);
 }
 // Count total nodes
 public int countNodes(Node node) {
