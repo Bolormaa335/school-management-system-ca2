@@ -140,7 +140,7 @@ public class Main {
 
                         // Ask user for name
                          System.out.print("Enter employee name to search: ");
-                         String searchName = scanner.nextLine();
+                         String searchName = scanner.nextLine().trim();
 
                          // Search employee by name
                          int index = EmployeeUtility.binarySearch(employees, searchName, 0, employees.size() - 1);
@@ -163,8 +163,17 @@ public class Main {
                        String newName = scanner.nextLine();
 
                       // Ask for role
-                       System.out.print("Enter role: ");
-                       String newRole = scanner.nextLine();
+                      System.out.println("Select role:");
+
+                     for (int i = 0; i < EmployeeManager.validRoles.length; i++) {
+                     System.out.println((i + 1) + ". " + EmployeeManager.validRoles[i]);
+                         }
+
+                      System.out.print("Choose role: ");
+                       int roleChoice = scanner.nextInt();
+                       scanner.nextLine();
+
+                        String newRole = EmployeeManager.validRoles[roleChoice - 1];
 
                       // Ask for department
                       System.out.print("Enter department: ");
@@ -185,16 +194,32 @@ public class Main {
                        break;
 
                     case CREATE_BINARY_TREE:
-                        System.out.println("CREATE BINARY TREE selected");
-                        BinaryTree tree = new BinaryTree();
 
-                        for (Employee employee : employees) {
-                         tree.insert(employee);
-                           }
+                  System.out.println("CREATE BINARY TREE selected");
 
-                         tree.displayHierarchy();
-                         tree.displayTreeStatistics();
-                        break;
+                   // Read employees again from file to keep original hierarchy order
+                   ArrayList<Employee> treeEmployees = readEmployeesFromFile();
+
+                   // Add newly added employees at the end of the hierarchy
+                   for (Employee employee : newEmployees) {
+                    treeEmployees.add(employee);
+                      }
+
+                   // Create binary tree
+                   BinaryTree tree = new BinaryTree();
+
+                  // Insert employees using original file order
+                    for (Employee employee : treeEmployees) {
+                    tree.insert(employee);
+                     }
+
+                  // Display hierarchy
+                  tree.displayHierarchy();
+ 
+                    // Display tree statistics
+                  tree.displayTreeStatistics();
+
+                     break;
 
                      case DISPLAY_RECORDS:
                         System.out.println("DISPLAY RECORDS selected");
