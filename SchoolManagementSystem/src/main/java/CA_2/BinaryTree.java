@@ -115,7 +115,7 @@ public void displayLevelOrder() {
     }
 }
 
-// Display hierarchy visually
+// Display hierarchy with levels
 public void displayHierarchy() {
 
     // Empty tree check
@@ -125,14 +125,15 @@ public void displayHierarchy() {
         return;
     }
 
-    // Display tree starting from root
-    displayTree(root, "", true);
+    // Display tree starting from root at level 1
+    displayTree(root, "", true, 1);
 }
 
-// Recursive visual hierarchy display
+// Recursive visual hierarchy display with level number
 private void displayTree(Node node,
                          String indent,
-                         boolean last) {
+                         boolean last,
+                         int level) {
 
     // Stop if node is empty
     if (node == null) {
@@ -140,10 +141,11 @@ private void displayTree(Node node,
         return;
     }
 
-    // Print current employee with branch symbol
+    // Print current employee with level number
     System.out.println(
             indent
             + (last ? "\\-- " : "|-- ")
+            + "Level " + level + ": "
             + node.employee
     );
 
@@ -151,10 +153,10 @@ private void displayTree(Node node,
     indent += last ? "    " : "|   ";
 
     // Display left child
-    displayTree(node.left, indent, false);
+    displayTree(node.left, indent, false, level + 1);
 
     // Display right child
-    displayTree(node.right, indent, true);
+    displayTree(node.right, indent, true, level + 1);
 }
 // Count total nodes
 public int countNodes(Node node) {
