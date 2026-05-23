@@ -13,8 +13,11 @@ import java.util.ArrayList;
  * @author Acer
  */
 
-
+//EmployeeManager class manages employee input, validation and saving new employee records to file.
 public class EmployeeManager {
+    
+     // List of valid school roles
+    // The user can only select one of these roles
     public static String[] validRoles ={
         "Principal",
         "Assistant Principal",
@@ -26,7 +29,9 @@ public class EmployeeManager {
         "Officer",
         "Assistant"
     };
-    // Valid school departments
+    
+    // List of valid school departments
+    // These departments are used to check user input
     public static String[] validDepartments = {
         "IT Department",
         "HR Office",
@@ -38,30 +43,32 @@ public class EmployeeManager {
         "Accounts Office",
         "IT Support"
     };
-   // Validate role
+    
+    // Validate school role entered or selected by the user
     public static boolean isValidRole(String role) {
 
         // Loop through valid roles
         for (String validRole : validRoles) {
 
-            // Compare roles
+            // Compare user role with valid role
+            // equalsIgnoreCase ignores uppercase/lowercase differences
             if (validRole.equalsIgnoreCase(role)) {
 
                 return true;
             }
         }
 
-        // Invalid role
+        //Return false if role is not found
         return false;
     }
 
-    // Validate department
+    // Validate department entered by the user
     public static boolean isValidDepartment(String department) {
 
         // Loop through valid departments
         for (String validDepartment : validDepartments) {
 
-            // Compare departments
+            // Compare user department with valid department
             if (validDepartment.equalsIgnoreCase(department)) {
 
                 return true;
@@ -73,21 +80,22 @@ public class EmployeeManager {
     }
 
     // Validate employee name
+    // Name must not be empty and must contain letters and spaces only
     public static boolean isValidName(String name) {
 
-        // Empty name check
+        // Check if name is empty after removing spaces
         if (name.trim().isEmpty()) {
 
             return false;
         }
 
-        // Check every character
+        // Check every character in thee name
         for (int i = 0; i < name.length(); i++) {
 
-            // Get character
+            // Store current character
             char ch = name.charAt(i);
 
-            // Check letters and spaces only
+            // Reject name if character is not a letter or space
             if (!Character.isLetter(ch)
                     && ch != ' ') {
 
@@ -95,11 +103,13 @@ public class EmployeeManager {
             }
         }
 
-        // Valid name
+        // name is valid 
         return true;
     }
 
-    // Add employee
+    // Add a new employee record
+    // This method validates data, creates Employee object,
+    // stores it in the ArrayList and saves it to text file
     public static Employee addEmployee(
             ArrayList<Employee> employees,
             String name,
@@ -107,11 +117,9 @@ public class EmployeeManager {
             String department) {
 
         // Validate all inputs
-        if (isValidName(name)
-                && isValidRole(role)
-                && isValidDepartment(department)) {
+        if (isValidName(name)&& isValidRole(role)&& isValidDepartment(department)) {
 
-            // Create employee object
+             // Create new Employee object using valid input
             Employee employee = new Employee(
                     name,
                     role,
@@ -120,28 +128,28 @@ public class EmployeeManager {
 
             // Add employee to list
             employees.add(employee);
-            // Save employee to file
+            // Save employee record to text file
              saveEmployeeToFile(employee);
 
             // Success message
-            System.out.println(
-                    name + " added successfully."
-            );
-
+            System.out.println( name + " added successfully." );
+ 
+            // Return created employee object
             return employee;
 
         } else {
 
             // Invalid input message
-            System.out.println(
-                    "Invalid name, role or department."
-            );
+            System.out.println( "Invalid name, role or department." );
 
             return null;
         }
     }
-    // Save new employee to text file
-// Save new employee to text file
+    
+    // Save new employee record to Applicants_Form.txt
+    // FileWriter is opened in append mode, so new records
+    // are added to the end of the file
+ 
 public static void saveEmployeeToFile(Employee employee) {
 
     try {
@@ -163,17 +171,13 @@ public static void saveEmployeeToFile(Employee employee) {
         // Close writer
         writer.close();
 
-        // Success message
-        System.out.println(
-                "Employee saved to file."
-        );
+        // Confirm that employee was saved to file
+        System.out.println( "Employee saved to file.");
 
     } catch (IOException e) {
 
         // Error message
-        System.out.println(
-                "Error saving employee to file."
-        );
+        System.out.println( "Error saving employee to file." );
     }
 }
 }
