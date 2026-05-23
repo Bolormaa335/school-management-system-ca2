@@ -13,29 +13,35 @@ import java.util.Scanner;
  *
  * @author Acer
  */
+
+// Main class controls the School Employee Management System
+// This class manages file reading, menu processing
+// user interaction and system operations
 public class Main {
    
    
     // Read employee records from Applicants_Form.txt
+    // This method loads employee data from the text file
+    // and stores the records inside an ArrayList
     public static ArrayList<Employee> readEmployeesFromFile() {
 
-        // Create empty employee list
+        // Create empty list to store employee objects
         ArrayList<Employee> employees = new ArrayList<Employee>();
 
         try {
             // Open the file
             File file = new File("Applicants_Form.txt");
 
-            // Scanner reads the file
+             // Scanner reads data from the file
             Scanner fileReader = new Scanner(file);
 
             // Read until file ends
             while (fileReader.hasNextLine()) {
 
-                // Read one line
+                  // Read one line from the file
                 String line = fileReader.nextLine();
 
-                // Split line into 3 parts
+                // Split line into name, role and department
                 String[] parts = line.split(",");
                 
                 // Make sure the line has name, role, department
@@ -66,7 +72,7 @@ public class Main {
 
         } catch (FileNotFoundException e) {
 
-            // Error if file is missing
+               // Display error if file does not exist
             System.out.println("File not found.");
         }
 
@@ -94,9 +100,10 @@ public class Main {
         // Read employees from file
         ArrayList<Employee> employees = readEmployeesFromFile();
         
+         // Store newly added employees during program execution
         ArrayList<Employee> newEmployees = new ArrayList<Employee>();
 
-        // Store user menu choice
+        // Store menu choice selected by the user
         int choice = 0;
 
         // Repeat menu until user chooses EXIT
@@ -142,7 +149,7 @@ public class Main {
                          System.out.print("Enter employee name to search: ");
                          String searchName = scanner.nextLine().trim();
 
-                         // Search employee by name
+                         // Search employee by name // Perform recursive binary search
                          int index = EmployeeUtility.binarySearch(employees, searchName, 0, employees.size() - 1);
 
                          // Check result
@@ -154,7 +161,7 @@ public class Main {
 }
                         break;
 
-                        case ADD_RECORD:
+                 case ADD_RECORD:
                         // Print message
                        System.out.println("ADD RECORD selected");
 
@@ -164,29 +171,37 @@ public class Main {
 
                       // Ask for role
                       System.out.println("Select role:");
+                      
+                     // Display all valid roles using loop
 
                      for (int i = 0; i < EmployeeManager.validRoles.length; i++) {
                      System.out.println((i + 1) + ". " + EmployeeManager.validRoles[i]);
                          }
-
+                     // Ask user to select role number
                       System.out.print("Choose role: ");
+                      
+                      // Read selected role number
                        int roleChoice = scanner.nextInt();
                        scanner.nextLine();
 
+                        // Convert selected number into role name
                         String newRole = EmployeeManager.validRoles[roleChoice - 1];
 
                       // Ask for department
                       System.out.print("Enter department: ");
                       String newDepartment = scanner.nextLine();
 
-                       // Call EmployeeManager class
+                       // Call EmployeeManager class to validate
+                       // and create new employee object
                        Employee newEmployee = EmployeeManager.addEmployee(
                        employees,
                        newName,
                        newRole,
                        newDepartment
                           );
-
+                       
+                       
+                       // Check if employee was added successfully
                       if (newEmployee != null) {
                       newEmployees.add(newEmployee);
                       }
@@ -194,29 +209,25 @@ public class Main {
                        break;
 
                     case CREATE_BINARY_TREE:
-
+                  // Display selected menu option
                   System.out.println("CREATE BINARY TREE selected");
 
-                   // Read employees again from file to keep original hierarchy order
-                   ArrayList<Employee> treeEmployees = readEmployeesFromFile();
+                   
 
-                   // Add newly added employees at the end of the hierarchy
-                   for (Employee employee : newEmployees) {
-                    treeEmployees.add(employee);
-                      }
-
-                   // Create binary tree
+                   // Create binary tree object
                    BinaryTree tree = new BinaryTree();
 
-                  // Insert employees using original file order
-                    for (Employee employee : treeEmployees) {
+                   // Insert employees into tree
+                    // using current employee list order
+                    for (Employee employee : employees) {
                     tree.insert(employee);
-                     }
-
-                  // Display hierarchy
+}
+                 // Display visual employee hierarchy
+                   
                   tree.displayHierarchy();
  
                     // Display tree statistics
+                   // such as total nodes and tree height
                   tree.displayTreeStatistics();
 
                      break;
@@ -233,14 +244,14 @@ public class Main {
                       // Display newly added employees
                      System.out.println("\nNewly added records:");
 
-                     // Check if empty
+                      // Check if new employee list is empty
                      if (newEmployees.isEmpty()) {
 
                      System.out.println("No new records added yet.");
 
                     } else {
 
-                     // Print new employees
+                     // Display newly added employee records
                      for (Employee employee : newEmployees) {
 
                     System.out.println(employee);
@@ -249,6 +260,7 @@ public class Main {
 
                      break;
                     case EXIT:
+                        // Display program end message
                         System.out.println("Program ended.");
                         break;
                 }
